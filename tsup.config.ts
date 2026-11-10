@@ -2,14 +2,14 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig([
   {
-    entry: { mapruler: 'src/index.ts' },
+    entry: { wadmap: 'src/index.ts' },
     format: ['esm', 'cjs'],
     dts: true,
     sourcemap: true,
     clean: true
   },
   {
-    entry: { mapruler: 'src/cdn.ts' },
+    entry: { wadmap: 'src/cdn.ts' },
     format: ['iife'],
     minify: true,
     sourcemap: true,

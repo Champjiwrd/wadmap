@@ -1,5 +1,5 @@
 {
-  "name": "@champjiwrd/mapruler",
+  "name": "wadmap",
   "version": "0.1.0",
   "description": "Distance and area measuring tool for Longdo Map v3 and MapLibre GL JS — great-circle accurate on the globe, Thai units (ไร่) built in",
   "keywords": [
@@ -25,29 +25,26 @@
     "url": "https://github.com/Champjiwrd/mapruler/issues"
   },
   "type": "module",
-  "main": "./dist/mapruler.cjs",
-  "module": "./dist/mapruler.js",
-  "types": "./dist/mapruler.d.ts",
-  "unpkg": "./dist/mapruler.min.js",
-  "jsdelivr": "./dist/mapruler.min.js",
+  "main": "./dist/wadmap.cjs",
+  "module": "./dist/wadmap.js",
+  "types": "./dist/wadmap.d.ts",
+  "unpkg": "./dist/wadmap.min.js",
+  "jsdelivr": "./dist/wadmap.min.js",
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/mapruler.d.ts",
-        "default": "./dist/mapruler.js"
+        "types": "./dist/wadmap.d.ts",
+        "default": "./dist/wadmap.js"
       },
       "require": {
-        "types": "./dist/mapruler.d.cts",
-        "default": "./dist/mapruler.cjs"
+        "types": "./dist/wadmap.d.cts",
+        "default": "./dist/wadmap.cjs"
       }
     }
   },
   "files": [
     "dist"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "sideEffects": false,
   "scripts": {
     "build": "tsup",

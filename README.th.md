@@ -1,4 +1,4 @@
-# mapruler
+# wadmap
 
 เครื่องมือวัดระยะและวัดพื้นที่สำหรับ **Longdo Map v3** และ **MapLibre GL JS**: เสียบเข้ากับแผนที่ได้ในบรรทัดเดียว
 
@@ -17,7 +17,7 @@
 
 ```html
 <script src="https://api.longdo.com/map3/?key=YOUR_KEY"></script>
-<script src="https://cdn.jsdelivr.net/npm/@champjiwrd/mapruler@0.1.0/dist/mapruler.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/wadmap@0.1.0/dist/wadmap.min.js"></script>
 <script>
   const map = new longdo.Map({ placeholder: document.getElementById('map') })
   map.Event.bind(longdo.EventName.Ready, () => {
@@ -29,11 +29,11 @@
 ### ผ่าน npm
 
 ```bash
-npm install @champjiwrd/mapruler
+npm install wadmap
 ```
 
 ```js
-import { MapRuler } from '@champjiwrd/mapruler'
+import { MapRuler } from 'wadmap'
 
 map.Event.bind(longdo.EventName.Ready, () => {
   const ruler = new MapRuler(map, { control: true })
