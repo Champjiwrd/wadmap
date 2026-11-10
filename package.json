@@ -1,0 +1,60 @@
+{
+  "name": "mapruler",
+  "version": "0.1.0",
+  "description": "Distance and area measuring tool for Longdo Map v3 and MapLibre GL JS — great-circle accurate on the globe, Thai units (ไร่) built in",
+  "keywords": [
+    "longdo",
+    "longdo-map",
+    "maplibre",
+    "maplibre-gl",
+    "measure",
+    "ruler",
+    "distance",
+    "area",
+    "map",
+    "thailand"
+  ],
+  "license": "MIT",
+  "author": "Warodom Baiudom",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Champjiwrd/mapruler.git"
+  },
+  "homepage": "https://github.com/Champjiwrd/mapruler#readme",
+  "bugs": {
+    "url": "https://github.com/Champjiwrd/mapruler/issues"
+  },
+  "type": "module",
+  "main": "./dist/mapruler.cjs",
+  "module": "./dist/mapruler.js",
+  "types": "./dist/mapruler.d.ts",
+  "unpkg": "./dist/mapruler.min.js",
+  "jsdelivr": "./dist/mapruler.min.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/mapruler.d.ts",
+        "default": "./dist/mapruler.js"
+      },
+      "require": {
+        "types": "./dist/mapruler.d.cts",
+        "default": "./dist/mapruler.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "tsup": "^9.0.0",
+    "typescript": "^6.0.3",
+    "vitest": "^5.1.0"
+  }
+}
