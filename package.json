@@ -1,6 +1,6 @@
 {
   "name": "wadmap",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Distance and area measuring tool for Longdo Map v3 and MapLibre GL JS — great-circle accurate on the globe, Thai units (ไร่) built in",
   "keywords": [
     "longdo",

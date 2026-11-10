@@ -2,7 +2,7 @@
 
 Distance and area measuring tool for **Longdo Map v3** and **MapLibre GL JS**. Add it to your map with one line.
 
-**English** | [ภาษาไทย](README.th.md)
+**English** | [ภาษาไทย](docs/README.th.md)
 
 > A personal project. Not an official Longdo Map product, and not affiliated with or endorsed by Longdo Map.
 
@@ -17,7 +17,7 @@ Distance and area measuring tool for **Longdo Map v3** and **MapLibre GL JS**. A
 
 ```html
 <script src="https://api.longdo.com/map3/?key=YOUR_KEY"></script>
-<script src="https://cdn.jsdelivr.net/npm/wadmap@0.1.0/dist/wadmap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/wadmap@0.1.1/dist/wadmap.min.js"></script>
 <script>
   const map = new longdo.Map({ placeholder: document.getElementById('map') })
   map.Event.bind(longdo.EventName.Ready, () => {

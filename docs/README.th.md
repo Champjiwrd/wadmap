@@ -2,7 +2,7 @@
 
 เครื่องมือวัดระยะและวัดพื้นที่สำหรับ **Longdo Map v3** และ **MapLibre GL JS**: เสียบเข้ากับแผนที่ได้ในบรรทัดเดียว
 
-[English](README.md) | **ภาษาไทย**
+[English](../README.md) | **ภาษาไทย**
 
 > โปรเจกต์ส่วนตัว ไม่ใช่ผลิตภัณฑ์ทางการของ Longdo Map และไม่มีส่วนเกี่ยวข้องกับ Longdo Map
 
@@ -17,7 +17,7 @@
 
 ```html
 <script src="https://api.longdo.com/map3/?key=YOUR_KEY"></script>
-<script src="https://cdn.jsdelivr.net/npm/wadmap@0.1.0/dist/wadmap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/wadmap@0.1.1/dist/wadmap.min.js"></script>
 <script>
   const map = new longdo.Map({ placeholder: document.getElementById('map') })
   map.Event.bind(longdo.EventName.Ready, () => {
@@ -120,4 +120,4 @@ npm run build     # dist/: ESM, CJS, IIFE (.min.js) และ .d.ts
 
 ## License
 
-[MIT](LICENSE)
+[MIT](../LICENSE)
