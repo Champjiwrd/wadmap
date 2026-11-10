@@ -18,11 +18,11 @@
   "author": "Warodom Baiudom",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Champjiwrd/mapruler.git"
+    "url": "git+https://github.com/Champjiwrd/wadmap.git"
   },
-  "homepage": "https://github.com/Champjiwrd/mapruler#readme",
+  "homepage": "https://github.com/Champjiwrd/wadmap#readme",
   "bugs": {
-    "url": "https://github.com/Champjiwrd/mapruler/issues"
+    "url": "https://github.com/Champjiwrd/wadmap/issues"
   },
   "type": "module",
   "main": "./dist/wadmap.cjs",
