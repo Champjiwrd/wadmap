@@ -67,7 +67,8 @@ map.Event.bind(longdo.EventName.Ready, () => {
 | `control` | `false` | แสดงปุ่มเลือกเครื่องมือในตัว ใส่ `true` (มุมขวาล่าง) หรือ `'top-left'`, `'top-right'`, `'bottom-left'`, `'bottom-right'` |
 | `locale` | `'th'` | `'th'` หรือ `'en'` |
 | `color` | `'#facc15'` | สีของเส้น จุด และป้ายตัวเลข |
-| `label` | `true` | แสดงป้ายตัวเลขข้างจุดสุดท้าย |
+| `label` | `true` | แสดงป้ายตัวเลขของแต่ละรูป |
+| `labelPosition` | `'end'` | ตำแหน่งป้าย: `'end'` (เหนือจุดสุดท้าย), `'start'` (เหนือจุดแรก), `'center'` (เหนือกึ่งกลางเส้นตามความยาว หรือกลาง polygon) หรือฟังก์ชัน `(shape) => [lng, lat]` (คืน `null` เพื่อซ่อนป้ายนั้น) |
 | `injectStyles` | `true` | ใส่ CSS เริ่มต้นให้อัตโนมัติ ปิดได้ถ้าต้องการเขียน CSS เอง (class ขึ้นต้นด้วย `mapruler-`) |
 
 ## API
@@ -82,6 +83,7 @@ ruler.clear()             // ลบทุกรูป เครื่องม�
 ruler.destroy()           // ถอดทุกอย่างออกจากแผนที่
 
 ruler.mode                // 'distance' | 'area' | null: เครื่องมือที่ใช้ตอนคลิกที่ว่าง
+ruler.labelPosition = 'center'  // เปลี่ยนตำแหน่งป้ายได้ทุกเมื่อ
 ruler.active              // true ระหว่างเปิดเครื่องมือหรือมีรูปที่เลือกอยู่ ใช้กันไม่ให้ click handler อื่นของคุณทำงาน
 ruler.state               // { mode, shapes, current, selected }
 //   shapes:   ทุกรูป: { id, mode, points, finished, distance (ม.), area (ตร.ม.) }
@@ -92,7 +94,7 @@ ruler.on('change', state => {})  // ทุกครั้งที่มีก�
 ruler.on('finish', state => {})  // ตอนจบรูป และหลังแก้ไขหรือย้ายรูปที่เลือก โดย state.current คือรูปนั้น
 ```
 
-ฟังก์ชันคำนวณ export แยกไว้ใช้ได้โดยไม่ต้องมีแผนที่: `haversine`, `pathLength`, `sphericalArea`, `greatCircle`, `arcLine`, `midpoint`, `movePoints`, `formatDistance`, `formatArea`
+ฟังก์ชันคำนวณ export แยกไว้ใช้ได้โดยไม่ต้องมีแผนที่: `haversine`, `pathLength`, `sphericalArea`, `greatCircle`, `arcLine`, `midpoint`, `alongPath`, `centroid`, `interpolate`, `movePoints`, `formatDistance`, `formatArea`
 
 ### ใช้แบบ headless กับ Vue / React
 

@@ -67,7 +67,8 @@ Shapes that aren't selected can't be dragged, so dragging over them pans the map
 | `control` | `false` | Show the built-in tool buttons. `true` places it bottom-right; or pass `'top-left'`, `'top-right'`, `'bottom-left'`, `'bottom-right'` |
 | `locale` | `'th'` | `'th'` or `'en'` |
 | `color` | `'#facc15'` | Color of the line, points and label |
-| `label` | `true` | Show a measurement label next to the last point |
+| `label` | `true` | Show a measurement label for each shape |
+| `labelPosition` | `'end'` | Where the label goes: `'end'` (above the last point), `'start'` (above the first point), `'center'` (above the middle of a line by length, on the middle of a polygon), or a function `(shape) => [lng, lat]` (return `null` to hide that label) |
 | `injectStyles` | `true` | Inject the default CSS automatically. Turn it off to style it yourself (all classes start with `mapruler-`) |
 
 ## API
@@ -82,6 +83,7 @@ ruler.clear()             // remove every shape; the tool stays on or off as it 
 ruler.destroy()           // remove everything from the map
 
 ruler.mode                // 'distance' | 'area' | null: the tool that clicking empty map draws
+ruler.labelPosition = 'center'  // change where labels go at any time
 ruler.active              // true while a tool is on or a shape is selected; use it to keep your own click handlers quiet
 ruler.state               // { mode, shapes, current, selected }
 //   shapes:   every shape: { id, mode, points, finished, distance (m), area (m²) }
@@ -93,7 +95,7 @@ ruler.on('finish', state => {})  // when a shape is finished, and after a select
                                  // state.current is that shape
 ```
 
-The math functions are exported separately and work without a map: `haversine`, `pathLength`, `sphericalArea`, `greatCircle`, `arcLine`, `midpoint`, `movePoints`, `formatDistance`, `formatArea`.
+The math functions are exported separately and work without a map: `haversine`, `pathLength`, `sphericalArea`, `greatCircle`, `arcLine`, `midpoint`, `alongPath`, `centroid`, `interpolate`, `movePoints`, `formatDistance`, `formatArea`.
 
 ### Headless with Vue / React
 

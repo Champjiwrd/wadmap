@@ -1,8 +1,10 @@
-import { arcLine, formatArea, formatDistance, midpoint, movePoints, pathLength, sphericalArea, type LngLat, type Locale } from './geo'
+import { alongPath, arcLine, centroid, formatArea, formatDistance, midpoint, movePoints, pathLength, sphericalArea, type LngLat, type Locale } from './geo'
 import { Control, type ControlPosition } from './control'
 import { injectStyles } from './style'
 
 export type MeasureMode = 'distance' | 'area'
+
+export type LabelPosition = 'end' | 'start' | 'center' | ((shape: ShapeState) => LngLat | null | undefined)
 
 export interface MapRulerOptions {
   /** Line, point and label color. Default `#facc15` */
@@ -11,8 +13,16 @@ export interface MapRulerOptions {
   locale?: Locale
   /** Show the built-in tool buttons. `true` puts them at bottom-right. Default `false` */
   control?: boolean | ControlPosition
-  /** Show each shape's measurement next to its last point. Default `true` */
+  /** Show each shape's measurement as a label on the map. Default `true` */
   label?: boolean
+  /**
+   * Where each shape's label goes. Default `end`
+   * - `end`: above the last point
+   * - `start`: above the first point
+   * - `center`: above the middle of a line (by length), or on the middle of a polygon
+   * - a function returning the [lng, lat] to put the label above, or null to hide it
+   */
+  labelPosition?: LabelPosition
   /** Inject the default stylesheet. Turn off to ship your own CSS. Default `true` */
   injectStyles?: boolean
 }
@@ -123,6 +133,7 @@ export class MapRuler {
       color: options.color ?? '#facc15',
       locale: options.locale ?? 'th',
       label: options.label ?? true,
+      labelPosition: options.labelPosition ?? 'end',
       injectStyles: options.injectStyles ?? true
     }
     if (this.options.injectStyles) injectStyles()
@@ -157,6 +168,16 @@ export class MapRuler {
 
   get color() {
     return this.options.color
+  }
+
+  /** Where each shape's label goes; see `MapRulerOptions.labelPosition` */
+  get labelPosition(): LabelPosition {
+    return this.options.labelPosition
+  }
+
+  set labelPosition(position: LabelPosition) {
+    this.options.labelPosition = position
+    this.placeLabels()
   }
 
   /**
@@ -408,12 +429,24 @@ export class MapRuler {
     }
   }
 
+  // Where the label goes, and whether it sits on that spot (the middle of a polygon) or above it
+  private labelAnchor(shape: Shape, line: LngLat[]): { at: LngLat | null | undefined; centered: boolean } {
+    const position = this.options.labelPosition
+    const polygon = shape.mode === 'area' && line.length > 2
+    if (typeof position === 'function') return { at: position(this.shapeState(shape)), centered: false }
+    if (position === 'start') return { at: line[0], centered: false }
+    if (position === 'center') {
+      return polygon ? { at: centroid(line), centered: true } : { at: alongPath(line), centered: false }
+    }
+    return { at: line.at(-1), centered: false }
+  }
+
   private placeLabel(shape: Shape) {
     const line = this.line(shape)
-    const anchor = line.at(-1)
+    const { at: anchor, centered } = line.length < 2 ? { at: null, centered: false } : this.labelAnchor(shape, line)
     let label = this.labels.get(shape.id)
     const occluded = anchor && this.renderer.transform?.isLocationOccluded?.({ lng: anchor[0], lat: anchor[1] })
-    if (!anchor || line.length < 2 || occluded) {
+    if (!anchor || occluded) {
       if (label) label.style.display = 'none'
       return
     }
@@ -448,7 +481,7 @@ export class MapRuler {
     label.style.pointerEvents = this.drawing ? 'none' : ''
     ;(label.lastChild as HTMLButtonElement).hidden = shape !== this.selected
     label.style.display = ''
-    label.style.transform = `translate(${x}px, ${y}px) translate(-50%, calc(-100% - 12px))`
+    label.style.transform = `translate(${x}px, ${y}px) ${centered ? 'translate(-50%, -50%)' : 'translate(-50%, calc(-100% - 12px))'}`
   }
 
   private onStyleLoad = () => {

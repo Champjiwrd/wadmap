@@ -77,6 +77,58 @@ export function midpoint(a: LngLat, b: LngLat): LngLat {
   return [lon + Math.round((a[0] - lon) / 360) * 360, deg(Math.atan2(z, Math.hypot(x, y)))]
 }
 
+/** The point a fraction `f` (0..1) of the way along the great circle from a to b, with its longitude kept next to a's */
+export function interpolate(a: LngLat, b: LngLat, f: number): LngLat {
+  const d = haversine(a, b) / EARTH_RADIUS_M
+  if (d < 1e-12) return a
+  const A = Math.sin((1 - f) * d) / Math.sin(d)
+  const B = Math.sin(f * d) / Math.sin(d)
+  const [ax, ay, az] = toVector(a)
+  const [bx, by, bz] = toVector(b)
+  const [x, y, z] = [A * ax + B * bx, A * ay + B * by, A * az + B * bz]
+  const lon = deg(Math.atan2(y, x))
+  return [lon + Math.round((a[0] - lon) / 360) * 360, deg(Math.atan2(z, Math.hypot(x, y)))]
+}
+
+/** The point a fraction `f` (0..1, default halfway) of the way along a path, by great-circle length */
+export function alongPath(points: LngLat[], f = 0.5): LngLat | undefined {
+  if (points.length < 2) return points[0]
+  let rest = pathLength(points) * Math.max(0, Math.min(1, f))
+  for (let i = 1; i < points.length; i++) {
+    const a = points[i - 1]!
+    const b = points[i]!
+    const d = haversine(a, b)
+    if (rest <= d) return interpolate(a, b, d ? rest / d : 0)
+    rest -= d
+  }
+  return points.at(-1)
+}
+
+/**
+ * Center of mass of a polygon ring (open or closed), on a flat lng/lat plane with longitudes kept
+ * continuous. Fine at measuring scale; for a concave polygon it can fall outside the shape.
+ * A ring with no area gives the mean of its points
+ */
+export function centroid(ring: LngLat[]): LngLat | undefined {
+  if (ring.length === 0) return undefined
+  const lon0 = ring[0]![0]
+  const pts = ring.map(([lon, lat]): LngLat => [lon + Math.round((lon0 - lon) / 360) * 360, lat])
+  let area = 0
+  let cx = 0
+  let cy = 0
+  pts.forEach(([x1, y1], i) => {
+    const [x2, y2] = pts[(i + 1) % pts.length]!
+    const cross = x1 * y2 - x2 * y1
+    area += cross
+    cx += (x1 + x2) * cross
+    cy += (y1 + y2) * cross
+  })
+  if (Math.abs(area) < 1e-18) {
+    return [pts.reduce((s, p) => s + p[0], 0) / pts.length, pts.reduce((s, p) => s + p[1], 0) / pts.length]
+  }
+  return [cx / (3 * area), cy / (3 * area)]
+}
+
 /**
  * Moves points across the sphere so that `from` lands on `to`, by rotating the globe about the axis
  * through both. Distances, angles and area are kept exactly, unlike adding a lng/lat offset.

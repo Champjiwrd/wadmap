@@ -1,6 +1,6 @@
 export { MapRuler } from './MapRuler'
-export type { MapRulerOptions, MeasureMode, MeasureState, ShapeState } from './MapRuler'
+export type { LabelPosition, MapRulerOptions, MeasureMode, MeasureState, ShapeState } from './MapRuler'
 export type { ControlPosition } from './control'
-export { arcLine, formatArea, formatDistance, greatCircle, haversine, midpoint, movePoints, pathLength, sphericalArea } from './geo'
+export { alongPath, arcLine, centroid, formatArea, formatDistance, greatCircle, haversine, interpolate, midpoint, movePoints, pathLength, sphericalArea } from './geo'
 export type { LngLat, Locale } from './geo'
 export { injectStyles } from './style'

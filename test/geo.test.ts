@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { EARTH_RADIUS_M, arcLine, formatArea, formatDistance, greatCircle, haversine, midpoint, movePoints, pathLength, sphericalArea, type LngLat } from '../src/geo'
+import { EARTH_RADIUS_M, alongPath, arcLine, centroid, formatArea, formatDistance, greatCircle, haversine, midpoint, movePoints, pathLength, sphericalArea, type LngLat } from '../src/geo'
 
 const ONE_DEGREE_M = 2 * Math.PI * EARTH_RADIUS_M / 360
 
@@ -122,5 +122,40 @@ describe('midpoint', () => {
     const [lon, lat] = midpoint([179, 0], [-179, 0])
     expect(lon).toBeCloseTo(180, 9)
     expect(lat).toBeCloseTo(0, 9)
+  })
+})
+
+describe('alongPath', () => {
+  it('finds the halfway point by length, not by point count', () => {
+    const [lon, lat] = alongPath([[100, 0], [100.1, 0], [100.4, 0]])!
+    expect(lon).toBeCloseTo(100.2, 6)
+    expect(lat).toBeCloseTo(0, 6)
+  })
+
+  it('returns the ends at 0 and 1', () => {
+    const path: LngLat[] = [[100, 13], [101, 14]]
+    const [lon0, lat0] = alongPath(path, 0)!
+    expect(lon0).toBeCloseTo(100, 9)
+    expect(lat0).toBeCloseTo(13, 9)
+    expect(alongPath(path, 1)![0]).toBeCloseTo(101, 9)
+  })
+})
+
+describe('centroid', () => {
+  it('finds the center of a square', () => {
+    const [lon, lat] = centroid([[100, 13], [101, 13], [101, 14], [100, 14]])!
+    expect(lon).toBeCloseTo(100.5, 9)
+    expect(lat).toBeCloseTo(13.5, 9)
+  })
+
+  it('weights by area, not by point count', () => {
+    // Extra points along the bottom edge must not pull the center down
+    const [, lat] = centroid([[0, 0], [0.25, 0], [0.5, 0], [0.75, 0], [1, 0], [1, 1], [0, 1]])!
+    expect(lat).toBeCloseTo(0.5, 9)
+  })
+
+  it('handles a polygon across the antimeridian', () => {
+    const [lon] = centroid([[179, 0], [-179, 0], [-179, 1], [179, 1]])!
+    expect(((lon % 360) + 360) % 360).toBeCloseTo(180, 9)
   })
 })
