@@ -17,7 +17,7 @@ Distance and area measuring tool for **Longdo Map v3** and **MapLibre GL JS**. A
 
 ```html
 <script src="https://api.longdo.com/map3/?key=YOUR_KEY"></script>
-<script src="https://cdn.jsdelivr.net/npm/mapruler@0.1.0/dist/mapruler.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@champjiwrd/mapruler@0.1.0/dist/mapruler.min.js"></script>
 <script>
   const map = new longdo.Map({ placeholder: document.getElementById('map') })
   map.Event.bind(longdo.EventName.Ready, () => {
@@ -29,11 +29,11 @@ Distance and area measuring tool for **Longdo Map v3** and **MapLibre GL JS**. A
 ### Via npm
 
 ```bash
-npm install mapruler
+npm install @champjiwrd/mapruler
 ```
 
 ```js
-import { MapRuler } from 'mapruler'
+import { MapRuler } from '@champjiwrd/mapruler'
 
 map.Event.bind(longdo.EventName.Ready, () => {
   const ruler = new MapRuler(map, { control: true, locale: 'en' })
